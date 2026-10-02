@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Metronome Timer</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            margin-top: 10px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #74ebd5;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 18px;
+            background-color: #74ebd5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ACB6E5;
+        }
+
+        #timerDisplay {
+            margin-top: 20px;
+            font-size: 28px;
+            color: #555;
+        }
+
+        .status {
+            margin-top: 20px;
+            font-size: 22px;
+            color: green;
+        }
+
+        #alarm {
+            display: none;
+        }
+
+        .footer {
+            margin-top: 40px;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Metronome Timer</h1>
+        <label for="intervalInput">Enter total duration in minutes:</label>
+        <input type="number" id="intervalInput" min="3" step="3" placeholder="Duration in minutes">
+        <br>
+        <button onclick="startMetronome()">Start Metronome</button>
+        <div id="timerDisplay">Time remaining: --:--</div>
+        <div class="status" id="statusDisplay"></div>
+
+        <!-- Use a louder alarm sound -->
+        <audio id="alarm" src="https://www.soundjay.com/button/beep-09.wav"></audio>
+
+        <div class="footer">Designed for periodic reminders with a beautiful user interface</div>
+    </div>
+
+    <script>
+        let countdown;
+        let alarm = document.getElementById('alarm');
+        alarm.volume = 1.0; // Set volume to maximum
+        alarm.loop = false; // Play only once, but can set to true for continuous beep
+
+        const interval = 3 * 60; // 3 minutes in seconds
+
+        function startMetronome() {
+            let totalDuration = parseInt(document.getElementById('intervalInput').value) * 60;
+            if (isNaN(totalDuration) || totalDuration <= 0) {
+                alert('Please enter a valid number of minutes.');
+                return;
+            }
+
+            clearInterval(countdown); // Clear any previous timer
+            let remainingTime = totalDuration;
+            document.getElementById('statusDisplay').innerText = "Metronome started. Beep every 3 minutes!";
+
+            countdown = setInterval(() => {
+                let minutes = Math.floor(remainingTime / 60);
+                let seconds = remainingTime % 60;
+                document.getElementById('timerDisplay').innerText = `Time remaining: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                remainingTime--;
+
+                if (remainingTime % interval === 0 && remainingTime >= 0) {
+                    // Play the beep sound every 3 minutes
+                    alarm.play();
+                }
+
+                if (remainingTime < 0) {
+                    clearInterval(countdown);
+                    document.getElementById('timerDisplay').innerText = "Time's up!";
+                    document.getElementById('statusDisplay').innerText = "Metronome completed!";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

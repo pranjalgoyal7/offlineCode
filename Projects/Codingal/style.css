@@ -1,0 +1,42 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.slide{
+    margin: auto;
+    max-width: 100%;
+}
+.slide img{
+    height: 500px;
+}
+.card img{
+    height: 400px;
+}
+#card1{
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
+    height: 590px;
+}
+#card2{
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 340px;
+    height: 590px;
+} */
+img{
+    max-height: fit-content;
+}
+#card1{
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
+    height: 590px;
+}
+#card2{
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 340px;
+    height: 590px;
+}
